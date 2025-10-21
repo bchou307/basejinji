@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1on1面談アジェンダ作成</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">1on1面談アジェンダ作成</h1>
+        
+        <form action="/generate" method="post">
+            <!-- 性格・タイプ -->
+            <div class="mb-3">
+                <label class="form-label">性格・タイプ</label>
+                <select class="form-select" name="personality" required>
+                    <option value="">選択してください</option>
+                    <option value="明るい・積極的">明るい・積極的</option>
+                    <option value="安定的">安定的</option>
+                    <option value="内向的">内向的</option>
+                    <option value="自信がない">自信がない</option>
+                    <option value="リータ志向">リータ志向</option>
+                </select>
+            </div>
+
+            <!-- 作業状況・役割 -->
+            <div class="mb-3">
+                <label class="form-label">作業状況・役割</label>
+                <select class="form-select" name="role" required>
+                    <option value="">選択してください</option>
+                    <option value="チームリーダー">チームリーダー</option>
+                    <option value="チームメンバー">チームメンバー</option>
+                    <option value="プロジェクトマネージャー">プロジェクトマネージャー</option>
+                    <option value="新人">新人</option>
+                    <option value="中堅">中堅</option>
+                    <option value="ベテラン">ベテラン</option>
+                    <option value="残業が多い">残業が多い</option>
+                </select>
+            </div>
+
+            <!-- 技術力・スキル -->
+            <div class="mb-3">
+                <label class="form-label">技術力・スキル</label>
+                <select class="form-select" name="skills" required>
+                    <option value="">選択してください</option>
+                    <option value="技術力が高い">技術力が高い</option>
+                    <option value="技術力低い">技術力低い</option>
+                    <option value="特定分野に強い">特定分野に強い</option>
+                    <option value="学習意欲が高い">学習意欲が高い</option>
+                    <option value="業務知識が豊富">業務知識が豊富</option>
+                    <option value="業務知識が不足">業務知識が不足</option>
+                </select>
+            </div>
+
+            <!-- 入社年数・経験 -->
+            <div class="mb-3">
+                <label class="form-label">入社年数・経験</label>
+                <select class="form-select" name="experience" required>
+                    <option value="">選択してください</option>
+                    <option value="新卒">新卒</option>
+                    <option value="中途">中途</option>
+                    <option value="異業種からの転職者">異業種からの転職者</option>
+                </select>
+            </div>
+
+            <!-- キャリア志向・希望 -->
+            <div class="mb-3">
+                <label class="form-label">キャリア志向・希望</label>
+                <select class="form-select" name="career_goal" required>
+                    <option value="">選択してください</option>
+                    <option value="技術スペシャリスト志向">技術スペシャリスト志向</option>
+                    <option value="マネジメント志向">マネジメント志向</option>
+                    <option value="安定志向">安定志向</option>
+                    <option value="挑戦志向">挑戦志向</option>
+                    <option value="キャリア迷う">キャリア迷う</option>
+                </select>
+            </div>
+
+            <!-- モチベーション・価値観 -->
+            <div class="mb-3">
+                <label class="form-label">モチベーション・価値観</label>
+                <select class="form-select" name="motivation" required>
+                    <option value="">選択してください</option>
+                    <option value="成長意欲が高い">成長意欲が高い</option>
+                    <option value="成長意欲が低い">成長意欲が低い</option>
+                    <option value="チーム貢献重視">チーム貢献重視</option>
+                    <option value="ワークライフバランス重視">ワークライフバランス重視</option>
+                    <option value="評価重視">評価重視</option>
+                </select>
+            </div>
+
+            <!-- 追加メモ -->
+            <div class="mb-3">
+                <label class="form-label">追加メモ</label>
+                <textarea class="form-control" name="additional_notes" rows="3" 
+                          placeholder="その他、特記事項があれば入力してください"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">アジェンダ生成</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
