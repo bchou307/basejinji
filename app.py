@@ -89,7 +89,7 @@ font_registered = register_japanese_font()
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('menu'))
     
     if request.method == 'POST':
         username = request.form.get('username')
@@ -100,7 +100,7 @@ def login():
         if username in users and users[username] == password:
             user = User(username)
             login_user(user)
-            return redirect(url_for('index'))
+            return redirect(url_for('menu'))
         else:
             return render_template('login.html', error='ユーザー名またはパスワードが正しくありません')
     
@@ -114,8 +114,18 @@ def logout():
 
 @app.route('/')
 @login_required
-def index():
+def menu():
+    return render_template('menu.html')
+
+@app.route('/agenda')
+@login_required
+def agenda():
     return render_template('index.html')
+
+@app.route('/resume')
+@login_required
+def resume():
+    return render_template('resume.html')
 
 @app.route('/generate', methods=['POST'])
 @login_required
