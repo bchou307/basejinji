@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, redirect, url_for, flash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from openai import AzureOpenAI  # TextAnalyticsClientではなくAzureOpenAIをインポート
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -13,6 +14,36 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+class User(UserMixin):
+    def __init__(self, username):
+        self.id = username
+        self.username = username
+
+def load_users():
+    users = {}
+    try:
+        with open('users', 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line and ':' in line:
+                    username, password = line.split(':', 1)
+                    users[username] = password
+    except FileNotFoundError:
+        print("users file not found")
+    return users
+
+@login_manager.user_loader
+def load_user(user_id):
+    users = load_users()
+    if user_id in users:
+        return User(user_id)
+    return None
 
 # Azure OpenAI設定
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
@@ -55,11 +86,39 @@ def register_japanese_font():
 # アプリ起動時にフォント登録
 font_registered = register_japanese_font()
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        users = load_users()
+        
+        if username in users and users[username] == password:
+            user = User(username)
+            login_user(user)
+            return redirect(url_for('index'))
+        else:
+            return render_template('login.html', error='ユーザー名またはパスワードが正しくありません')
+    
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
 @app.route('/')
+@login_required
 def index():
     return render_template('index.html')
 
 @app.route('/generate', methods=['POST'])
+@login_required
 def generate_agenda():
     data = {
         'personality': request.form.get('personality'),
